@@ -70,6 +70,20 @@ const mockDrinks: Drink[] = [
     imageUrl: "/placeholder-drink.svg",
     isBestseller: false,
   },
+  {
+    _id: "6",
+    name: "Iced Tea",
+    description: "This is a placeholder for Iced Tea",
+    category: "Tea",
+    sizes: [
+      { size: "Small", price: 3.0 },
+      { size: "Medium", price: 3.5 },
+      { size: "Large", price: 4.0 },
+    ],
+    milkOptions: [],
+    imageUrl: "/placeholder-drink.svg",
+    isBestseller: false,
+  },
 ];
 
 export default mockDrinks;
