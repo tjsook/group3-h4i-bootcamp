@@ -1,11 +1,11 @@
 "use client";
 
 import Image from "next/image";
-import mockDrinks from "@/data/mockDrinks";
 import { useEffect, useState } from "react";
-import { getDrink, getDrinks } from "@/lib/drinks";
+import { getDrinks } from "@/lib/drinks";
 import { Drink } from "@/types/drink";
 import DrinkCard from "@/components/DrinkCard";
+import Link from "next/link";
 
 export default function Home() {
   const [drinks, setDrinks] = useState<Drink[]>([]);
@@ -23,7 +23,7 @@ export default function Home() {
   return (
     <main>
       <h1>
-        <Image src="/logo.png" alt="Coffee" width={600} height={400} />
+        <Image src="/logo.png" alt="Coffee" width={50} height={50} />
         Coffee Shop
       </h1>
       <h2>Welcome to our coffee shop!</h2>
@@ -36,7 +36,7 @@ export default function Home() {
       <section>
         <h2>Order Now!</h2>
         <p>Check out our menu and order your favorite drinks!</p>
-        <a href="/menu">Go to Menu</a>
+        <Link href="/menu">Menu</Link>
       </section>
     </main>
   );
