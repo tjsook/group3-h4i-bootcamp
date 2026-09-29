@@ -1,8 +1,7 @@
 "use client";
 
-import mockDrinks from "@/data/mockDrinks";
 import { useEffect, useState } from "react";
-import { getDrink, getDrinks } from "@/lib/drinks";
+import { getDrinks } from "@/lib/drinks";
 import { Drink } from "@/types/drink";
 import DrinkCard from "@/components/DrinkCard";
 
@@ -33,24 +32,22 @@ export default function MenuPage() {
     };
   }, []);
 
-  if (loading) return <div className="p-6">Loading menu...</div>;
-  if (error) return <div className="p-6 text-red-600">Error: {error}</div>;
+  if (loading) return <div>Loading menu...</div>;
+  if (error) return <div>Error: {error}</div>;
 
   const grouped = drinks.reduce<Record<string, Drink[]>>((acc, drink) => {
-    const category = drink.category ?? "Other";
-    if (!acc[category]) acc[category] = [];
-    acc[category].push(drink);
+    (acc[drink.category] ??= []).push(drink);
     return acc;
   }, {});
 
   return (
-    <main className="p-6 space-y-10">
-      <h1 className="text-3xl font-bold">Menu</h1>
+    <main>
+      <h1>Menu</h1>
 
       {Object.entries(grouped).map(([category, items]) => (
         <section key={category}>
-          <h2 className="text-xl font-semibold mb-4">{category}</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <h2>{category}</h2>
+          <div>
             {items.map((drink) => (
               <DrinkCard key={drink._id} drink={drink} />
             ))}
