@@ -11,7 +11,7 @@ export default function Contact() {
     message: "",
   });
 
-  function handleChange(event) {
+  function handleChange(event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
     const { name, value } = event.target;
 
     setFormData({
@@ -20,7 +20,7 @@ export default function Contact() {
     });
   }
 
-  function handleSubmit(event) {
+  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
     console.log(formData);
