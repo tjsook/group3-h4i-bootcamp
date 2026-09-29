@@ -2,30 +2,37 @@
 
 import Image from "next/image";
 import mockDrinks from "@/data/mockDrinks";
-//import getDrinks from "@/data/mockDrinks"; (Will switch to getDrinks when 4 merges.)
+import { useEffect, useState } from "react";
+import { getDrink, getDrinks } from "@/lib/drinks";
+import { Drink } from "@/types/drink";
+import DrinkCard from "@/components/DrinkCard";
 
 export default function Home() {
-  const found = mockDrinks.find((drink) => drink.isBestseller);
-  //const drinks = getDrinks(); (Will switch...prolly already merged but..)
+  const [drinks, setDrinks] = useState<Drink[]>([]);
+
+  useEffect(() => {
+    async function load() {
+      const data = await getDrinks();
+      setDrinks(data);
+    }
+    load();
+  }, []);
+
+  const bestSeller = drinks.find((drink) => drink.isBestseller);
 
   return (
     <main>
       <h1>
-        {" "}
-        <Image src="/logo.png" alt="Coffee" width={600} height={400} /> Coffee Shop
+        <Image src="/logo.png" alt="Coffee" width={600} height={400} />
+        Coffee Shop
       </h1>
       <h2>Welcome to our coffee shop!</h2>
 
       <section>
-        <div> Our Best Seller!</div>
-        {found && (
-          <div>
-            <Image src={found.imageUrl} alt={found.name} width={200} height={200} />
-            <h3>{found.name}</h3>
-            <p>{found.description}</p>
-          </div>
-        )}
+        <h2> Our Best Seller!</h2>
+        {bestSeller && <DrinkCard drink={bestSeller} />}
       </section>
+
       <section>
         <h2>Order Now!</h2>
         <p>Check out our menu and order your favorite drinks!</p>
