@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-//import "./globals.css";
+import "./globals.css";
 import Navbar from "@/components/Navbar";
 
 //! Update metadata to match your project
 export const metadata: Metadata = {
   title: "Coffee Shop",
-  description: "A simple coffee shop website built with Next.js 13 and TypeScript.",
+  description: "A simple coffee shop website built with Next.js 14 and TypeScript.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
