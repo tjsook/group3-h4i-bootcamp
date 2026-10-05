@@ -1,11 +1,25 @@
 import { NextResponse } from "next/server";
-import mockDrinks from "@/data/mockDrinks";
+import { isObjectIdOrHexString } from "mongoose";
+import connectDB from "@/database/db";
+import DrinkModel from "@/database/drinkSchema";
+import { Drink } from "@/types/drink";
+
+export const dynamic = "force-dynamic";
 
 export async function GET(request: Request, { params }: { params: { id: string } }) {
-  const drink = mockDrinks.find((drink) => drink._id === params.id);
-  if (!drink) {
+  if (!isObjectIdOrHexString(params.id)) {
     return NextResponse.json({ error: "Drink not found" }, { status: 404 });
-  } else {
-    return NextResponse.json(drink);
+  }
+
+  try {
+    await connectDB();
+    const drink = await DrinkModel.findById(params.id).lean<Drink>();
+    if (!drink) {
+      return NextResponse.json({ error: "Drink not found" }, { status: 404 });
+    }
+    return NextResponse.json(drink, { headers: { "Cache-Control": "no-store" } });
+  } catch (error) {
+    console.error("Failed to fetch drink", error);
+    return NextResponse.json({ error: "Failed to fetch drink" }, { status: 500 });
   }
 }
