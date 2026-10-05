@@ -11,4 +11,4 @@ export interface Order {
 }
 
 // what the frontend sends when placing an order
-export type NewOrder = Omit<Order, "_id" | "createdAt">;
+export type NewOrder = Pick<Order, "drinkId" | "size" | "milk">;
