@@ -16,8 +16,10 @@ export function OrderForm({ drink }: { drink: Drink }) {
     event.preventDefault();
     setMessage("");
 
-    if (!selectedSize) {
-      setMessage("Please choose a size!");
+    const selectedSizeOption = drink.sizes.find((option) => option.size === selectedSize);
+
+    if (!selectedSizeOption) {
+      setMessage("Please choose a valid size!");
       return;
     }
 
@@ -32,7 +34,7 @@ export function OrderForm({ drink }: { drink: Drink }) {
       console.log("drink._id:", drink._id, typeof drink._id);
       await placeOrder({
         drinkId: drink._id,
-        size: selectedSize,
+        size: selectedSizeOption.size,
         ...(hasMilkOptions ? { milk: selectedMilk } : {}),
       });
 
