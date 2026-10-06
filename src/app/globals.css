@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Crete+Round:ital@0;1&family=Marcellus&display=swap");
+
 .marcellus-regular {
   font-family: "Marcellus", serif;
   font-weight: 400;
@@ -61,7 +63,7 @@ h6 {
 button {
   font-family: var(--font-body);
   background-color: var(--cg-secondary);
-  color: var(--cg-secondary);
+  color: var(--cg-primary);
   border: none;
   padding: 10px 20px;
   cursor: pointer;
@@ -79,7 +81,6 @@ a {
   text-decoration-thickness: 2px;
   color: var(--cg-primary);
   font-family: var(--font-body);
-  font-weight: bold;
 }
 
 .navbar a {
