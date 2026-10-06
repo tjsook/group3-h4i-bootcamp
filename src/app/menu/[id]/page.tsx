@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { Drink } from "@/types/drink";
 import { getDrink } from "@/lib/drinks";
+import { OrderForm } from "@/components/OrderForm";
 
 export default function Page({ params }: { params: { id: string } }) {
   const [drink, setDrink] = useState<Drink | null>(null);
@@ -51,6 +52,7 @@ export default function Page({ params }: { params: { id: string } }) {
           </ul>
         </>
       )}
+      <OrderForm drink={drink} />
     </div>
   );
 }
