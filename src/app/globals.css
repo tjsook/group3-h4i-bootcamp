@@ -112,7 +112,4 @@ form {
   background-color: var(--cg-primary);
   color: var(--cg-secondary);
   padding: 10px 15px;
-
-  /* Debug border */
-  /* border: solid red; */
 }
