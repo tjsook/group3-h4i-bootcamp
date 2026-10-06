@@ -21,7 +21,7 @@ export default function Home() {
   const bestSeller = drinks.find((drink) => drink.isBestseller);
 
   return (
-    <main>
+    <main className="home">
       <h1>
         <Image src="/logo.png" alt="Coffee" width={50} height={50} />
         Coffee Shop
