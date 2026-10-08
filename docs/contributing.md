@@ -9,6 +9,30 @@ Here are all of the steps you should follow whenever contributing to this repo!
 3. Make changes to the code
 4. `npm run lint` to ensure code standards. (running `npm run lint:fix` will fix most of the styling errors)
 5. `npx tsc --noEmit` to catch type errors. Lint does not catch these, and the site will not build with them
+6. `npm test` to run the unit tests
+
+## Writing Tests
+
+We use [Vitest](https://vitest.dev/) for unit tests.
+
+- `npm test` runs every test once. `npm run test:watch` reruns them as you save
+- Put the test file next to the code it tests and end the name with `.test.ts` (for example `src/lib/drinks.ts` -> `src/lib/drinks.test.ts`)
+- See `src/lib/drinks.test.ts` for an example
+- Test plain functions (data in, result out). If the logic you want to test is inside a page or component, move it into its own function first and test that
+- Tests must not use the real database or the network
+
+A test looks like this:
+
+```ts
+import { describe, expect, it } from "vitest";
+import { add } from "@/lib/math";
+
+describe("add", () => {
+  it("adds two numbers", () => {
+    expect(add(1, 2)).toBe(3);
+  });
+});
+```
 
 ## Commiting Changes
 
