@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { cancelOrder, getOrders } from "@/lib/orders";
 import { Order } from "@/types/order";
+import styles from "./page.module.css";
 
 export default function OrdersPage() {
   const [orders, setOrders] = useState<Order[]>([]);
@@ -55,19 +56,25 @@ export default function OrdersPage() {
   }
 
   return (
-    <main>
+    <main className="shop-page">
       <h1>Orders</h1>
       {loading ? (
-        <p role="status">Loading orders...</p>
+        <p className="page-message" role="status">
+          Loading orders...
+        </p>
       ) : loadError ? (
-        <p role="alert">Error: {loadError}</p>
+        <p className="page-message" role="alert">
+          Error: {loadError}
+        </p>
       ) : orders.length === 0 ? (
-        <p>No orders yet.</p>
+        <p className="page-message" role="status">
+          No orders yet.
+        </p>
       ) : (
-        <table>
+        <table className={styles.table} role="table">
           <caption>All orders, newest first</caption>
-          <thead>
-            <tr>
+          <thead role="rowgroup">
+            <tr role="row">
               <th scope="col">Drink</th>
               <th scope="col">Size</th>
               <th scope="col">Milk</th>
@@ -76,18 +83,39 @@ export default function OrdersPage() {
               <th scope="col">Actions</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody role="rowgroup">
             {orders.map((order) => (
-              <tr key={order._id}>
-                <th scope="row">{order.drinkName}</th>
-                <td>{order.size}</td>
-                <td>{order.milk || "None"}</td>
-                <td>${order.price.toFixed(2)}</td>
-                <td>
+              <tr key={order._id} role="row">
+                <th className={styles.drink} scope="row" role="rowheader">
+                  {order.drinkName}
+                </th>
+                <td role="cell">
+                  <span className={styles.mobileLabel} aria-hidden="true">
+                    Size
+                  </span>
+                  {order.size}
+                </td>
+                <td role="cell">
+                  <span className={styles.mobileLabel} aria-hidden="true">
+                    Milk
+                  </span>
+                  {order.milk || "None"}
+                </td>
+                <td role="cell">
+                  <span className={styles.mobileLabel} aria-hidden="true">
+                    Price
+                  </span>
+                  ${order.price.toFixed(2)}
+                </td>
+                <td className={styles.time} role="cell">
+                  <span className={styles.mobileLabel} aria-hidden="true">
+                    Time
+                  </span>
                   <time dateTime={order.createdAt}>{new Date(order.createdAt).toLocaleString()}</time>
                 </td>
-                <td>
+                <td className={styles.actions} role="cell">
                   <button
+                    className={styles.cancelButton}
                     type="button"
                     onClick={() => handleCancel(order)}
                     disabled={cancellingIds.includes(order._id)}
@@ -95,7 +123,11 @@ export default function OrdersPage() {
                   >
                     {cancellingIds.includes(order._id) ? "Cancelling..." : "Cancel"}
                   </button>
-                  {cancelErrors[order._id] && <p role="alert">Error: {cancelErrors[order._id]}</p>}
+                  {cancelErrors[order._id] && (
+                    <p className={styles.cancelError} role="alert">
+                      Error: {cancelErrors[order._id]}
+                    </p>
+                  )}
                 </td>
               </tr>
             ))}

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { getDrinks } from "@/lib/drinks";
 import { Drink } from "@/types/drink";
 import DrinkCard from "@/components/DrinkCard";
+import styles from "./page.module.css";
 
 export default function MenuPage() {
   const [drinks, setDrinks] = useState<Drink[]>([]);
@@ -34,14 +35,6 @@ export default function MenuPage() {
     };
   }, []);
 
-  if (loading) return <div>Loading menu...</div>;
-  if (error) return <div>Error: {error}</div>;
-
-  // const grouped = drinks.reduce<Record<string, Drink[]>>((acc, drink) => {
-  //   (acc[drink.category] ??= []).push(drink);
-  //   return acc;
-  // }, {});
-
   const categories = ["All", ...Array.from(new Set(drinks.map((drink) => drink.category)))];
 
   const filteredDrinks = drinks.filter((drink) => {
@@ -58,39 +51,57 @@ export default function MenuPage() {
   }, {});
 
   return (
-    <main>
+    <main className="shop-page">
       <h1>Menu</h1>
-
-      <div>
-        <input
-          type="text"
-          placeholder="Search drinks..."
-          value={searchQuery}
-          onChange={(event) => setSearchQuery(event.target.value)}
-        />
-
-        <select value={selectedCategory} onChange={(event) => setSelectedCategory(event.target.value)}>
-          {categories.map((category) => (
-            <option key={category} value={category}>
-              {category}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      {filteredDrinks.length === 0 ? (
-        <p>No drinks match your search.</p>
+      {loading ? (
+        <p className="page-message" role="status">
+          Loading menu...
+        </p>
+      ) : error ? (
+        <p className="page-message" role="alert">
+          Error: {error}
+        </p>
       ) : (
-        Object.entries(grouped).map(([category, items]) => (
-          <section key={category}>
-            <h2>{category}</h2>
-            <div>
-              {items.map((drink) => (
-                <DrinkCard key={drink._id} drink={drink} />
-              ))}
-            </div>
-          </section>
-        ))
+        <>
+          <div className={styles.filters}>
+            <label>
+              Search drinks
+              <input
+                type="search"
+                placeholder="Search drinks..."
+                value={searchQuery}
+                onChange={(event) => setSearchQuery(event.target.value)}
+              />
+            </label>
+            <label>
+              Category
+              <select value={selectedCategory} onChange={(event) => setSelectedCategory(event.target.value)}>
+                {categories.map((category) => (
+                  <option key={category} value={category}>
+                    {category}
+                  </option>
+                ))}
+              </select>
+            </label>
+          </div>
+
+          {filteredDrinks.length === 0 ? (
+            <p className="page-message" role="status">
+              {drinks.length === 0 ? "No drinks available yet." : "No drinks match your search."}
+            </p>
+          ) : (
+            Object.entries(grouped).map(([category, items]) => (
+              <section className={styles.category} key={category}>
+                <h2>{category}</h2>
+                <div className={styles.grid}>
+                  {items.map((drink) => (
+                    <DrinkCard key={drink._id} drink={drink} />
+                  ))}
+                </div>
+              </section>
+            ))
+          )}
+        </>
       )}
     </main>
   );
