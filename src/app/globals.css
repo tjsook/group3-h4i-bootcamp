@@ -97,6 +97,7 @@ form {
 }
 
 .navbar {
+  box-sizing: border-box;
   position: -webkit-sticky;
   position: sticky;
   top: 0;
@@ -113,4 +114,42 @@ form {
   background-color: var(--cg-primary);
   color: var(--cg-secondary);
   padding: 10px 15px;
+}
+
+.navbar nav {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.navbar a {
+  display: inline-flex;
+  box-sizing: border-box;
+  min-height: 44px;
+  align-items: center;
+}
+
+.shop-page {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 32px 20px 48px;
+  align-items: stretch;
+  line-height: 1.5;
+}
+
+.shop-page > h1 {
+  margin: 0 0 var(--spacing-large);
+  font-size: clamp(2rem, 5vw, 3rem);
+}
+
+.page-message {
+  margin: 0;
+  padding: var(--spacing-large);
+  border: 1px solid color-mix(in srgb, var(--cg-primary) 20%, transparent);
+  border-left: 4px solid var(--cg-primary);
+  border-radius: var(--border-radius);
+  background: var(--cg-background);
+  color: var(--cg-primary);
+  overflow-wrap: anywhere;
 }
