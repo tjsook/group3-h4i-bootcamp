@@ -30,7 +30,7 @@ export default function Page({ params }: { params: { id: string } }) {
   return (
     <div>
       <h1>{drink.name}</h1>
-      <Image src={drink.imageUrl} alt={drink.name} width={300} height={300} />
+      <Image src={drink.imageUrl} alt={drink.name} width={400} height={300} />
       <p>{drink.description}</p>
 
       <h2>Sizes</h2>
