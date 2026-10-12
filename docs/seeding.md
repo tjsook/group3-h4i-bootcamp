@@ -2,6 +2,8 @@
 
 The menu drinks live in the `drinks` collection of the `team3` database. The starting data is in [`docs/seed/drinks.json`](./seed/drinks.json) (the same 6 drinks as `src/data/mockDrinks.ts`, without ids so MongoDB creates them).
 
+Each drink's `imageUrl` points to a photo in `public/drinks/` (for example `/drinks/mocha.jpg`). If you add a drink, add its photo there too (800 x 600, JPEG).
+
 Only reload the data if the drinks got deleted or messed up. **Reloading replaces every drink for the whole team**, and every drink gets a new id, so old links to `/menu/<id>` and existing orders that point to the old ids will stop working.
 
 ## Option 1: mongosh
