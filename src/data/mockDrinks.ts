@@ -12,7 +12,7 @@ const mockDrinks: Drink[] = [
       { size: "Large", price: 4.0 },
     ],
     milkOptions: ["Whole", "Oat", "Almond"],
-    imageUrl: "/placeholder-drink.svg",
+    imageUrl: "/drinks/coffee.jpg",
     isBestseller: false,
   },
   {
@@ -26,7 +26,7 @@ const mockDrinks: Drink[] = [
       { size: "Large", price: 6.0 },
     ],
     milkOptions: ["Whole", "Oat", "Almond"],
-    imageUrl: "/placeholder-drink.svg",
+    imageUrl: "/drinks/matcha.jpg",
     isBestseller: false,
   },
   {
@@ -40,7 +40,7 @@ const mockDrinks: Drink[] = [
       { size: "Large", price: 5.75 },
     ],
     milkOptions: ["Whole", "Oat", "Almond"],
-    imageUrl: "/placeholder-drink.svg",
+    imageUrl: "/drinks/mocha.jpg",
     isBestseller: true,
   },
   {
@@ -54,7 +54,7 @@ const mockDrinks: Drink[] = [
       { size: "Large", price: 4.5 },
     ],
     milkOptions: [],
-    imageUrl: "/placeholder-drink.svg",
+    imageUrl: "/drinks/americano.jpg",
     isBestseller: false,
   },
   {
@@ -67,7 +67,7 @@ const mockDrinks: Drink[] = [
       { size: "Large", price: 4.5 },
     ],
     milkOptions: ["Whole", "Oat", "Almond"],
-    imageUrl: "/placeholder-drink.svg",
+    imageUrl: "/drinks/cold-brew.jpg",
     isBestseller: false,
   },
   {
@@ -81,7 +81,7 @@ const mockDrinks: Drink[] = [
       { size: "Large", price: 4.0 },
     ],
     milkOptions: [],
-    imageUrl: "/placeholder-drink.svg",
+    imageUrl: "/drinks/iced-tea.jpg",
     isBestseller: false,
   },
 ];
