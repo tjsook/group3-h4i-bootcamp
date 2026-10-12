@@ -8,7 +8,7 @@ export const dynamic = "force-dynamic";
 export async function GET() {
   try {
     await connectDB();
-    const drinks = await DrinkModel.find().lean<Drink[]>();
+    const drinks = await DrinkModel.find().sort({ _id: 1 }).lean<Drink[]>();
     return NextResponse.json(drinks, { headers: { "Cache-Control": "no-store" } });
   } catch (error) {
     console.error("Failed to fetch drinks", error);
