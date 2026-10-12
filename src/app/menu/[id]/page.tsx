@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { Drink } from "@/types/drink";
 import { getDrink } from "@/lib/drinks";
 import { OrderForm } from "@/components/OrderForm";
+import styles from "./page.module.css";
 
 export default function Page({ params }: { params: { id: string } }) {
   const [drink, setDrink] = useState<Drink | null>(null);
@@ -72,31 +73,50 @@ export default function Page({ params }: { params: { id: string } }) {
   }
 
   return (
-    <div>
-      <h1>{drink.name}</h1>
-      <Image src={drink.imageUrl} alt={drink.name} width={400} height={300} />
-      <p>{drink.description}</p>
+    <main className="shop-page">
+      <Link className={styles.backLink} href="/menu">
+        ← Back to menu
+      </Link>
 
-      <h2>Sizes</h2>
-      <ul>
-        {drink.sizes.map((option) => (
-          <li key={option.size}>
-            {option.size}: ${option.price.toFixed(2)}
-          </li>
-        ))}
-      </ul>
+      <div className={styles.layout}>
+        <Image
+          className={styles.image}
+          src={drink.imageUrl}
+          alt={drink.name}
+          width={400}
+          height={300}
+          sizes="(max-width: 760px) 100vw, 50vw"
+          priority
+        />
 
-      {drink.milkOptions.length > 0 && (
-        <>
-          <h2>Milk Options</h2>
-          <ul>
-            {drink.milkOptions.map((milk) => (
-              <li key={milk}>{milk}</li>
+        <div className={styles.details}>
+          <h1>{drink.name}</h1>
+          <p className={styles.category}>{drink.category}</p>
+          <p>{drink.description}</p>
+
+          <h2>Sizes</h2>
+          <ul className={styles.options}>
+            {drink.sizes.map((option) => (
+              <li key={option.size}>
+                {option.size}: ${option.price.toFixed(2)}
+              </li>
             ))}
           </ul>
-        </>
-      )}
-      <OrderForm drink={drink} />
-    </div>
+
+          {drink.milkOptions.length > 0 && (
+            <>
+              <h2>Milk Options</h2>
+              <ul className={styles.options}>
+                {drink.milkOptions.map((milk) => (
+                  <li key={milk}>{milk}</li>
+                ))}
+              </ul>
+            </>
+          )}
+
+          <OrderForm drink={drink} />
+        </div>
+      </div>
+    </main>
   );
 }
