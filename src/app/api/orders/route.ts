@@ -3,6 +3,7 @@ import { isObjectIdOrHexString } from "mongoose";
 import connectDB from "@/database/db";
 import DrinkModel from "@/database/drinkSchema";
 import OrderModel from "@/database/orderSchema";
+import { validateOrderOptions } from "@/lib/orderValidation";
 import { Drink } from "@/types/drink";
 
 export const dynamic = "force-dynamic";
@@ -48,28 +49,11 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Drink not found" }, { status: 404 });
     }
 
-    const sizeOption = drink.sizes.find((option) => option.size === size);
-    if (!sizeOption) {
-      return NextResponse.json(
-        {
-          error: `Size "${size}" is not offered for ${drink.name}. Choose from: ${drink.sizes.map((option) => option.size).join(", ")}`,
-        },
-        { status: 400 },
-      );
+    const validation = validateOrderOptions(drink, size, milk);
+    if (!validation.valid) {
+      return NextResponse.json({ error: validation.error }, { status: 400 });
     }
-
-    if (drink.milkOptions.length > 0 && (typeof milk !== "string" || !drink.milkOptions.includes(milk))) {
-      return NextResponse.json(
-        { error: `Choose a milk offered for ${drink.name}: ${drink.milkOptions.join(", ")}` },
-        { status: 400 },
-      );
-    }
-    if (drink.milkOptions.length === 0 && milk !== undefined) {
-      return NextResponse.json(
-        { error: `${drink.name} does not offer milk; omit milk from the order` },
-        { status: 400 },
-      );
-    }
+    const { sizeOption } = validation;
 
     const order = await OrderModel.create({
       drinkId: drink._id,
