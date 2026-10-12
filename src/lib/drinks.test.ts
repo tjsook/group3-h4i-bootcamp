@@ -2,7 +2,6 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { getDrink, getDrinks } from "@/lib/drinks";
 import mockDrinks from "@/data/mockDrinks";
 
-// replaces the real fetch so the tests never hit the network
 function mockFetch(body: unknown, status = 200) {
   const fetchMock = vi.fn().mockResolvedValue(new Response(JSON.stringify(body), { status }));
   vi.stubGlobal("fetch", fetchMock);
@@ -37,5 +36,17 @@ describe("getDrink", () => {
 
     expect(fetchMock).toHaveBeenCalledWith("/api/drinks/abc%2F123");
     expect(drink).toEqual(mockDrinks[0]);
+  });
+
+  it("returns null when the drink doesn't exist", async () => {
+    mockFetch({ error: "Drink not found" }, 404);
+
+    await expect(getDrink("missing")).resolves.toBeNull();
+  });
+
+  it("throws an error with the status code when the API fails", async () => {
+    mockFetch({ error: "Failed to fetch drink" }, 500);
+
+    await expect(getDrink("abc")).rejects.toThrow("Failed to fetch drink abc: 500");
   });
 });
