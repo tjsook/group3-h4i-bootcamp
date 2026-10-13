@@ -5,3 +5,7 @@
 
 --font-heading: "Marcellus", serif; --> This is for the headers
 --font-body: "Crete Round", serif; --> This is for the body text
+
+--spacing-small: 8px; --> For Padding/gaps
+--spacing-medium: 16px; --> For padding/gaps
+--spacing-large: 24px; --> For Padding/gaps

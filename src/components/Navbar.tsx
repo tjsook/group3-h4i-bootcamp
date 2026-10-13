@@ -5,7 +5,7 @@ export default function Navbar() {
   return (
     <div className="navbar">
       <nav>
-        <Image src="/logo.png" alt="Coffee" width={50} height={50} />
+        <Image src="/newlogo2.png" alt="Coffee" width={50} height={50} />
         <Link href="/">Home</Link>
         <Link href="/menu">Menu</Link>
         <Link href="/orders">Orders</Link>
