@@ -5,6 +5,7 @@ import { getDrinks } from "@/lib/drinks";
 import { Drink } from "@/types/drink";
 import DrinkCard from "@/components/DrinkCard";
 import styles from "./page.module.css";
+import { filterDrinks } from "@/lib/filterDrinks";
 
 export default function MenuPage() {
   const [drinks, setDrinks] = useState<Drink[]>([]);
@@ -37,13 +38,7 @@ export default function MenuPage() {
 
   const categories = ["All", ...Array.from(new Set(drinks.map((drink) => drink.category)))];
 
-  const filteredDrinks = drinks.filter((drink) => {
-    const matchesSearch = drink.name.toLowerCase().includes(searchQuery.toLowerCase());
-
-    const matchesCategory = selectedCategory === "All" || drink.category === selectedCategory;
-
-    return matchesSearch && matchesCategory;
-  });
+  const filteredDrinks = filterDrinks(drinks, searchQuery, selectedCategory);
 
   const grouped = filteredDrinks.reduce<Record<string, Drink[]>>((acc, drink) => {
     (acc[drink.category] ??= []).push(drink);
