@@ -91,28 +91,6 @@ export default function Page({ params }: { params: { id: string } }) {
 
         <div className={styles.details}>
           <h1>{drink.name}</h1>
-          <p className={styles.category}>{drink.category}</p>
-          <p>{drink.description}</p>
-
-          <h2>Sizes</h2>
-          <ul className={styles.options}>
-            {drink.sizes.map((option) => (
-              <li key={option.size}>
-                {option.size}: ${option.price.toFixed(2)}
-              </li>
-            ))}
-          </ul>
-
-          {drink.milkOptions.length > 0 && (
-            <>
-              <h2>Milk Options</h2>
-              <ul className={styles.options}>
-                {drink.milkOptions.map((milk) => (
-                  <li key={milk}>{milk}</li>
-                ))}
-              </ul>
-            </>
-          )}
 
           <OrderForm drink={drink} />
         </div>
