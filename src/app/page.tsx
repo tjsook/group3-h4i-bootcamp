@@ -46,9 +46,9 @@ export default function Home() {
           <h1>Bean & Brew Co.</h1>
           <h3> Brewing coffee with passion and care. Fostering community one cup at a time. </h3>
 
-          <button>
-            <Link href="/menu">Order Now</Link>
-          </button>
+          <Link href="/menu" className="order-now-button">
+            Order Now
+          </Link>
         </div>
       </section>
 
