@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Drink } from "@/types/drink";
 import { placeOrder } from "@/lib/orders";
+import { validateOrderForm } from "@/lib/orderFormValidation";
 
 export function OrderForm({ drink }: { drink: Drink }) {
   const [customerName, setCustomerName] = useState("");
@@ -25,17 +26,14 @@ export function OrderForm({ drink }: { drink: Drink }) {
       return;
     }
 
-    const selectedSizeOption = drink.sizes.find((option) => option.size === selectedSize);
+    const validation = validateOrderForm(drink, selectedSize, selectedMilk);
 
-    if (!selectedSizeOption) {
-      setErrorMessage("Please choose a valid size!");
+    if (!validation.valid) {
+      setErrorMessage(validation.error);
       return;
     }
 
-    if (hasMilkOptions && !drink.milkOptions.includes(selectedMilk)) {
-      setErrorMessage("Please choose a valid milk option!");
-      return;
-    }
+    const selectedSizeOption = validation.sizeOption;
 
     try {
       setIsSubmitting(true);
