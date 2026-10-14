@@ -36,11 +36,6 @@
   font-size: 1.5rem;
 }
 
-.category {
-  margin: var(--spacing-small) 0 var(--spacing-medium);
-  font-size: 0.9375rem;
-}
-
 @media (max-width: 760px) {
   .layout {
     grid-template-columns: minmax(0, 1fr);

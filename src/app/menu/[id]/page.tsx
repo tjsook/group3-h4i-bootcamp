@@ -91,8 +91,6 @@ export default function Page({ params }: { params: { id: string } }) {
 
         <div className={styles.details}>
           <h1>{drink.name}</h1>
-          <p className={styles.category}>{drink.category}</p>
-          <p>{drink.description}</p>
 
           <OrderForm drink={drink} />
         </div>
