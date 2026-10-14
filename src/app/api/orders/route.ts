@@ -8,6 +8,8 @@ import { Drink } from "@/types/drink";
 
 export const dynamic = "force-dynamic";
 
+const MAX_NAME_LENGTH = 50;
+
 export async function GET() {
   try {
     await connectDB();
@@ -31,7 +33,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Request body must be an order object" }, { status: 400 });
   }
 
-  const { drinkId, size, milk } = body as Record<string, unknown>;
+  const { drinkId, size, milk, customerName } = body as Record<string, unknown>;
   if (typeof drinkId !== "string" || !isObjectIdOrHexString(drinkId)) {
     return NextResponse.json({ error: "drinkId must be a valid drink ID" }, { status: 400 });
   }
@@ -40,6 +42,12 @@ export async function POST(request: Request) {
   }
   if (milk !== undefined && typeof milk !== "string") {
     return NextResponse.json({ error: "milk must be a string when provided" }, { status: 400 });
+  }
+  if (typeof customerName !== "string" || !customerName.trim()) {
+    return NextResponse.json({ error: "A name is required for the order" }, { status: 400 });
+  }
+  if (customerName.trim().length > MAX_NAME_LENGTH) {
+    return NextResponse.json({ error: `Name must be ${MAX_NAME_LENGTH} characters or fewer` }, { status: 400 });
   }
 
   try {
@@ -58,6 +66,7 @@ export async function POST(request: Request) {
     const order = await OrderModel.create({
       drinkId: drink._id,
       drinkName: drink.name,
+      customerName: customerName.trim(),
       size: sizeOption.size,
       ...(milk !== undefined ? { milk } : {}),
       price: sizeOption.price,

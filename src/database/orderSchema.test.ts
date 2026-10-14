@@ -4,6 +4,7 @@ import Order from "@/database/orderSchema";
 const validOrder = {
   drinkId: "507f1f77bcf86cd799439011",
   drinkName: "Cold Brew",
+  customerName: "Sam",
   size: "Medium",
   milk: "Oat",
   price: 4,
@@ -26,6 +27,9 @@ describe("Order schema", () => {
   it.each([
     { field: "drinkId", overrides: { drinkId: "abc" }, path: "drinkId" },
     { field: "missing drinkName", overrides: { drinkName: undefined }, path: "drinkName" },
+    { field: "missing customerName", overrides: { customerName: undefined }, path: "customerName" },
+    { field: "blank customerName", overrides: { customerName: "   " }, path: "customerName" },
+    { field: "long customerName", overrides: { customerName: "a".repeat(51) }, path: "customerName" },
     { field: "size", overrides: { size: "Venti" }, path: "size" },
     { field: "price", overrides: { price: -1 }, path: "price" },
     { field: "missing price", overrides: { price: undefined }, path: "price" },
@@ -34,9 +38,10 @@ describe("Order schema", () => {
     expect(error?.errors[path]).toBeDefined();
   });
 
-  it("trims the drink name and milk", () => {
-    const order = new Order({ ...validOrder, drinkName: "  Cold Brew ", milk: " Oat " });
+  it("trims the drink name, customer name and milk", () => {
+    const order = new Order({ ...validOrder, drinkName: "  Cold Brew ", customerName: " Sam ", milk: " Oat " });
     expect(order.drinkName).toBe("Cold Brew");
+    expect(order.customerName).toBe("Sam");
     expect(order.milk).toBe("Oat");
   });
 });
