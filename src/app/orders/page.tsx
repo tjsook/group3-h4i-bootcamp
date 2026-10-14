@@ -76,6 +76,7 @@ export default function OrdersPage() {
           <thead role="rowgroup">
             <tr role="row">
               <th scope="col">Drink</th>
+              <th scope="col">Name</th>
               <th scope="col">Size</th>
               <th scope="col">Milk</th>
               <th scope="col">Price</th>
@@ -89,6 +90,12 @@ export default function OrdersPage() {
                 <th className={styles.drink} scope="row" role="rowheader">
                   {order.drinkName}
                 </th>
+                <td role="cell">
+                  <span className={styles.mobileLabel} aria-hidden="true">
+                    Name
+                  </span>
+                  {order.customerName || "Guest"}
+                </td>
                 <td role="cell">
                   <span className={styles.mobileLabel} aria-hidden="true">
                     Size
