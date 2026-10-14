@@ -44,7 +44,6 @@ main {
   align-items: center;
 }
 
-html,
 body {
   margin: 0;
   width: 100%;
@@ -202,8 +201,15 @@ form {
 }
 
 .order-now-button {
-  align-items: center;
   justify-content: center;
+  padding: 10px 20px;
+  border-radius: var(--border-radius);
+  background-color: var(--cg-secondary);
+  color: var(--cg-primary);
+  font-family: var(--font-body);
+  font-weight: bold;
+  text-decoration: none;
+  cursor: pointer;
 }
 
 .community {

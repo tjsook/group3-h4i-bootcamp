@@ -4,7 +4,7 @@ import Navbar from "@/components/Navbar";
 
 //! Update metadata to match your project
 export const metadata: Metadata = {
-  title: "Coffee Shop",
+  title: "Bean & Brew Co.",
   description: "A simple coffee shop website built with Next.js 14 and TypeScript.",
 };
 
