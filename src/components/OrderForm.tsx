@@ -7,55 +7,56 @@ import { placeOrder } from "@/lib/orders";
 export function OrderForm({ drink }: { drink: Drink }) {
   const [selectedSize, setSelectedSize] = useState("");
   const [selectedMilk, setSelectedMilk] = useState("");
-  const [message, setMessage] = useState("");
+  const [confirmation, setConfirmation] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const hasMilkOptions = drink.milkOptions.length > 0;
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setMessage("");
+    setConfirmation("");
+    setErrorMessage("");
 
     const selectedSizeOption = drink.sizes.find((option) => option.size === selectedSize);
 
     if (!selectedSizeOption) {
-      setMessage("Please choose a valid size!");
+      setErrorMessage("Please choose a valid size!");
       return;
     }
 
     if (hasMilkOptions && !drink.milkOptions.includes(selectedMilk)) {
-      setMessage("Please choose a valid milk option!");
+      setErrorMessage("Please choose a valid milk option!");
       return;
     }
 
     try {
       setIsSubmitting(true);
 
-      console.log("drink._id:", drink._id, typeof drink._id);
       await placeOrder({
         drinkId: drink._id,
         size: selectedSizeOption.size,
         ...(hasMilkOptions ? { milk: selectedMilk } : {}),
       });
 
-      setMessage("Order placed successfully!");
+      const milkDescription = hasMilkOptions ? ` with ${selectedMilk} milk` : "";
+
+      setConfirmation(`Order placed! You ordered a ${selectedSizeOption.size} ${drink.name}${milkDescription}.`);
       setSelectedSize("");
       setSelectedMilk("");
     } catch (error) {
-      console.error("Failed to place order:", error);
-      setMessage("Your order could not be placed. Please try again.");
+      setErrorMessage(error instanceof Error ? error.message : "Unable to place your order.");
     } finally {
       setIsSubmitting(false);
     }
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h2>Customize your order</h2>
+    <form className="order-form" onSubmit={handleSubmit}>
+      <h2>Create your order:</h2>
 
       <fieldset>
-        <legend>Size</legend>
-
+        <legend>Size:</legend>
         {drink.sizes.map((option) => (
           <label key={option.size}>
             <input
@@ -72,7 +73,7 @@ export function OrderForm({ drink }: { drink: Drink }) {
 
       {hasMilkOptions && (
         <label>
-          Milk choice
+          Milk choice:
           <select value={selectedMilk} onChange={(event) => setSelectedMilk(event.target.value)}>
             <option value="">Choose milk</option>
 
@@ -89,7 +90,18 @@ export function OrderForm({ drink }: { drink: Drink }) {
         {isSubmitting ? "Placing order..." : "Place order"}
       </button>
 
-      {message && <p role="alert">{message}</p>}
+      {confirmation && (
+        <div className="order-confirmation" role="status">
+          <p>{confirmation}</p>
+          <a href="/orders">View order history</a>
+        </div>
+      )}
+
+      {errorMessage && (
+        <p className="order-error" role="alert">
+          {errorMessage}
+        </p>
+      )}
     </form>
   );
 }
