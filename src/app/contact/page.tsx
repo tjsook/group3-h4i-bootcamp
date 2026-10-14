@@ -2,14 +2,18 @@
 
 import { useState } from "react";
 
+const emptyForm = {
+  name: "",
+  phone: "",
+  email: "",
+  address: "",
+  message: "",
+};
+
 export default function Contact() {
-  const [formData, setFormData] = useState({
-    name: "",
-    phone: "",
-    email: "",
-    address: "",
-    message: "",
-  });
+  const [formData, setFormData] = useState(emptyForm);
+  const [confirmation, setConfirmation] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
     const { name, value } = event.target;
@@ -22,8 +26,28 @@ export default function Contact() {
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    setConfirmation("");
+    setErrorMessage("");
 
-    console.log(formData);
+    const contact = {
+      name: formData.name.trim(),
+      phone: formData.phone.trim(),
+      email: formData.email.trim(),
+      address: formData.address.trim(),
+      message: formData.message.trim(),
+    };
+
+    // address is the only optional field
+    if (!contact.name || !contact.phone || !contact.email || !contact.message) {
+      setErrorMessage("Please fill in your name, phone, email, and message.");
+      return;
+    }
+
+    // not saved anywhere yet, the form has no backend
+    console.log("Contact form submitted:", contact);
+
+    setConfirmation(`Thanks, ${contact.name}! We got your message and will reply to ${contact.email}.`);
+    setFormData(emptyForm);
   }
 
   return (
@@ -57,6 +81,18 @@ export default function Contact() {
         </div>
 
         <button type="submit">Submit</button>
+
+        {confirmation && (
+          <p className="page-message" role="status">
+            {confirmation}
+          </p>
+        )}
+
+        {errorMessage && (
+          <p className="page-message" role="alert">
+            {errorMessage}
+          </p>
+        )}
       </form>
     </main>
   );
