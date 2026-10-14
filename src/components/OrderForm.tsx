@@ -5,6 +5,7 @@ import { Drink } from "@/types/drink";
 import { placeOrder } from "@/lib/orders";
 
 export function OrderForm({ drink }: { drink: Drink }) {
+  const [customerName, setCustomerName] = useState("");
   const [selectedSize, setSelectedSize] = useState("");
   const [selectedMilk, setSelectedMilk] = useState("");
   const [confirmation, setConfirmation] = useState("");
@@ -17,6 +18,12 @@ export function OrderForm({ drink }: { drink: Drink }) {
     event.preventDefault();
     setConfirmation("");
     setErrorMessage("");
+
+    const trimmedName = customerName.trim();
+    if (!trimmedName) {
+      setErrorMessage("Please enter a name for the order!");
+      return;
+    }
 
     const selectedSizeOption = drink.sizes.find((option) => option.size === selectedSize);
 
@@ -35,6 +42,7 @@ export function OrderForm({ drink }: { drink: Drink }) {
 
       await placeOrder({
         drinkId: drink._id,
+        customerName: trimmedName,
         size: selectedSizeOption.size,
         ...(hasMilkOptions ? { milk: selectedMilk } : {}),
       });
@@ -54,6 +62,18 @@ export function OrderForm({ drink }: { drink: Drink }) {
   return (
     <form className="order-form" onSubmit={handleSubmit}>
       <h2>Create your order:</h2>
+
+      <label>
+        Name for the order
+        <input
+          type="text"
+          name="customerName"
+          value={customerName}
+          maxLength={50}
+          autoComplete="given-name"
+          onChange={(event) => setCustomerName(event.target.value)}
+        />
+      </label>
 
       <fieldset>
         <legend>Size:</legend>

@@ -9,8 +9,8 @@ export default function About() {
         exciting.
       </p>
       <p>
-        More than just a place to grab a drink, our café is a space for the community. Whether you are stopping in for a
-        quick coffee or staying awhile, we are happy to have you here.
+        More than just a place to grab a drink, Bean & Brew Co. is a space for the community. Whether you are stopping
+        in for a quick coffee or staying awhile, we are happy to have you here.
       </p>
     </main>
   );
