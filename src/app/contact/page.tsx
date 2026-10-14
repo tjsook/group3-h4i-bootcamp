@@ -27,7 +27,7 @@ export default function Contact() {
   }
 
   return (
-    <main>
+    <main className="contact-page">
       <h1>Contact</h1>
 
       <form onSubmit={handleSubmit}>
