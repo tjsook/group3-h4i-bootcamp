@@ -12,4 +12,4 @@ export interface Order {
 }
 
 // what the frontend sends when placing an order
-export type NewOrder = Pick<Order, "drinkId" | "size" | "milk">;
+export type NewOrder = Pick<Order, "drinkId" | "size" | "milk"> & { customerName: string };
