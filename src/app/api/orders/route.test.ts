@@ -21,11 +21,11 @@ function mockDrink(drink: Drink) {
   findById.mockReturnValue({ lean: vi.fn().mockResolvedValue(drink) });
 }
 
-function orderRequest(size: string, milk?: string) {
+function orderRequest(size: string, milk?: string, name: Record<string, unknown> = { customerName: "Sam" }) {
   return new Request("http://localhost/api/orders", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ drinkId, size, ...(milk !== undefined ? { milk } : {}) }),
+    body: JSON.stringify({ drinkId, size, ...(milk !== undefined ? { milk } : {}), ...name }),
   });
 }
 
@@ -42,6 +42,7 @@ describe("POST /api/orders", () => {
     const orderData = {
       drinkId,
       drinkName: drink.name,
+      customerName: "Sam",
       size,
       ...(milk !== undefined ? { milk } : {}),
       price,
@@ -91,6 +92,30 @@ describe("POST /api/orders", () => {
 
     expect(response.status).toBe(400);
     expect(await response.json()).toEqual({ error });
+    expect(createOrder).not.toHaveBeenCalled();
+  });
+
+  it("trims the name before it saves the order", async () => {
+    mockDrink(coldBrew);
+    createOrder.mockResolvedValue({});
+
+    const response = await POST(orderRequest("Medium", "Oat", { customerName: "  Sam  " }));
+
+    expect(response.status).toBe(201);
+    expect(createOrder).toHaveBeenCalledWith(expect.objectContaining({ customerName: "Sam" }));
+  });
+
+  it.each([
+    { label: "missing", name: {}, error: "A name is required for the order" },
+    { label: "blank", name: { customerName: "   " }, error: "A name is required for the order" },
+    { label: "not a string", name: { customerName: 42 }, error: "A name is required for the order" },
+    { label: "too long", name: { customerName: "a".repeat(51) }, error: "Name must be 50 characters or fewer" },
+  ])("returns 400 when the name is $label", async ({ name, error }) => {
+    const response = await POST(orderRequest("Medium", "Oat", name));
+
+    expect(response.status).toBe(400);
+    expect(await response.json()).toEqual({ error });
+    expect(findById).not.toHaveBeenCalled();
     expect(createOrder).not.toHaveBeenCalled();
   });
 });
